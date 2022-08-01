@@ -4,48 +4,45 @@ const { waffle } = require("hardhat");
 import { Signer } from "ethers";
 
 const ethers = hre.ethers;
+const provider = waffle.provider;
 
 async function main() {
-    const provider = waffle.provider;
-    let Victim, victim, Attacker, attacker;
     let user: Signer, hacker: Signer;
+    let attacker, victim, Attacker, Victim;
 
     [user, hacker] = await ethers.getSigners();
 
-    Victim = await hre.ethers.getContractFactory("Victim", user);
+    Victim = await ethers.getContractFactory("Victim", user);
     victim = await Victim.deploy();
     await victim.deployed();
 
-    let overrides = { value: ethers.utils.parseEther("2") }
-
-    Attacker = await hre.ethers.getContractFactory("Attacker", hacker);
-    attacker = await Attacker.deploy(overrides);
+    Attacker = await ethers.getContractFactory("Attacker", hacker);
+    attacker = await Attacker.deploy({ value: ethers.utils.parseEther("2") });
     await attacker.deployed();
 
-    let tx = {
+    const tx = {
         from: await user.getAddress(),
         to: victim.address,
         value: ethers.utils.parseEther("100")
     }
     await user.sendTransaction(tx);
 
-    console.log("Before Attack\n----------------------------")
-    console.log("Attacker Balance:", await ethers.utils.formatEther(await provider.getBalance(attacker.address)));
-    console.log("Victim Balance:", await ethers.utils.formatEther(await provider.getBalance(victim.address)));
+    console.log('Before attack, balance info:')
+    console.log('Victim balance is', await ethers.utils.formatEther(await provider.getBalance(victim.address)));
+    console.log('Attacker balance is', await ethers.utils.formatEther(await provider.getBalance(attacker.address)));
 
-    console.log('\n\nNow attack start\n\n');
+    console.log("Ready for attack...");
 
     await attacker.connect(hacker).setVictim(victim.address);
-    await attacker.connect(hacker).attack(await ethers.utils.parseEther("1.999"));
+    await attacker.connect(hacker).attack(ethers.utils.parseEther("2"));
 
-    console.log("\nAfter the attack");
-    console.log("Attacker Balance:", await ethers.utils.formatEther(await provider.getBalance(attacker.address)));
-    console.log("Victim Balance:", await ethers.utils.formatEther(await provider.getBalance(victim.address)));
+    console.log('\nAfter attack, balance info:')
+    console.log('Victim balance is', await ethers.utils.formatEther(await provider.getBalance(victim.address)));
+    console.log('Attacker balance is', await ethers.utils.formatEther(await provider.getBalance(attacker.address)));
 }
 
-main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error);
+main().then(() => process.exit(0))
+    .catch((err) => {
+        console.log(err);
         process.exit(1);
-    });
+    })
