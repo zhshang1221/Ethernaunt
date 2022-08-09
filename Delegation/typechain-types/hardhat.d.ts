@@ -17,21 +17,21 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Attacker__factory>;
     getContractFactory(
+      name: "Delegate",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Delegate__factory>;
+    getContractFactory(
+      name: "Delegation",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Delegation__factory>;
+    getContractFactory(
       name: "Fallback",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Fallback__factory>;
     getContractFactory(
-      name: "IToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IToken__factory>;
-    getContractFactory(
       name: "Telephone",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Telephone__factory>;
-    getContractFactory(
-      name: "Token",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Token__factory>;
 
     getContractAt(
       name: "Attacker",
@@ -39,25 +39,25 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Attacker>;
     getContractAt(
+      name: "Delegate",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Delegate>;
+    getContractAt(
+      name: "Delegation",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Delegation>;
+    getContractAt(
       name: "Fallback",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Fallback>;
     getContractAt(
-      name: "IToken",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IToken>;
-    getContractAt(
       name: "Telephone",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Telephone>;
-    getContractAt(
-      name: "Token",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Token>;
 
     // default types
     getContractFactory(

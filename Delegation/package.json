@@ -7,7 +7,9 @@
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.7.2",
     "ethereum-waffle": "^3.4.4",
-    "hardhat": "^2.10.1"
+    "hardhat": "^2.10.1",
+    "sha3": "^2.1.4",
+    "web3": "^1.7.5"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.4.7",
